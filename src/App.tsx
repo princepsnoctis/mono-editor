@@ -1,13 +1,11 @@
 import "./App.css";
+import Navigator from "./components/Navigator";
 
 function App() {
   return (
-    <>
-      <h1>Mono Editor</h1>
-      <h1> Mono Editor</h1>
-      <h2>Coś</h2>
-      <h3>I więcej</h3>
-    </>
+    <main className="container">
+      <Navigator />
+    </main>
   )
 }
 
