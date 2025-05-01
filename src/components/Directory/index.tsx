@@ -1,31 +1,42 @@
-import DirectoryIcon from '@assets/fileIcon.png'
+import './index.css';
+
+import DirectoryIcon from '@/assets/directoryIcon.svg';
+import OpenedDirectory from '@/assets/openedDirectory.svg';
+import ClosedDirectory from '@/assets/closedDirectory.svg';
 import File from '../File'
 import type { FileProps } from '../File'
+import { useState } from 'react';
 
-interface DirectoryProps {
+export interface DirectoryProps {
   name: string;
   children: Array<DirectoryProps | FileProps>;
   type: 'directory';
   opened: boolean;
+  depth?: number;
 }
 
 const Directory = (props: DirectoryProps) => {
-  const children = props.children.map((child, index) => {
-    if (child.type === 'directory')
-      return <Directory key={index+1} {...(child)} />;
-    else
-      return <File key={index+1} {...(child)} />;
-  });
+  const [opened, setOpened] = useState(props.opened);
+  const depth = props.depth ?? 0;
 
-  const ArrowIcon = props.opened ? '@assets/openedDirectory.png' : '@assets/closedDirectory.png';
+  const children = opened ? props.children.map((child, index) => {
+    if (child.type === 'directory')
+      return <Directory key={index} {...(child)} depth={depth+1} />;
+    else
+      return <File key={index} {...(child)} depth={depth+1} />;
+  }) : null;
 
   return (
-    <div className="file">
-      <img className="arrow-icon" src={ArrowIcon} alt="Opened or closed directory"></img>
-      <img className="file-icon" src={DirectoryIcon} alt="Directory icon"></img>
-      <span className="name">{props.name}</span>
-      { children }
-    </div>
+    <>
+      <div className="directory" onClick={() => setOpened(prev => !prev)} style={{ marginLeft: `${depth * 5}px` }}>
+        <div className="arrow">
+          <img className="arrow-icon" src={opened ? OpenedDirectory : ClosedDirectory} alt="Opened or closed directory"></img>
+        </div>
+        <img className="file-icon" src={DirectoryIcon} alt="Directory icon"></img>
+        <span className="name">{props.name}</span>
+      </div>
+      {children}
+    </>
   )
 }
 

@@ -14,7 +14,7 @@ const Terminal = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  })
+  }, []);
 
   return (
     <div className={"terminal" + (!opened ? " hidden" : "")}>
