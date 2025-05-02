@@ -3,5 +3,29 @@
 }
 
 body {
+    height: 100vh;
+
     margin: 0;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+.app {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    &__content {
+        flex: 1;
+
+        display: flex;
+
+        flex-direction: row;
+    }
 }

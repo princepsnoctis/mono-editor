@@ -1,7 +1,10 @@
 .files {
   width: 300px;
-  height: calc(100vh - 35px);
+  height: 100%;
+
   background-color: #1e1e1e;
+
+  // TODO: Clean up what's below
   display: flex;
   flex-direction: column;
 }

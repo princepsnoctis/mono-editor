@@ -1,4 +1,4 @@
-import './index.css';
+import './index.scss';
 
 import Directory from '../Directory';
 import File from '../File';

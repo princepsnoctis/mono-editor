@@ -4,9 +4,9 @@ import ButtonDecorationMinimize from "../Button/Decoration/Minimize";
 import ButtonDecorationMaximize from "../Button/Decoration/Maximize";
 import ButtonDecorationClose from "../Button/Decoration/Close";
 
-const Navigator = () => {
+const Decoration = () => {
     return (
-        <div className="navigator">
+        <div className="decoration">
             <ButtonDecorationMinimize />
             <ButtonDecorationMaximize />
             <ButtonDecorationClose />
@@ -14,4 +14,4 @@ const Navigator = () => {
     )
 }
 
-export default Navigator
+export default Decoration
