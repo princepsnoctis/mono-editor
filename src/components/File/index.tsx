@@ -1,9 +1,10 @@
-import TsxIcon from '@/assets/tsxType.svg';
-import TsIcon from '@/assets/tsType.svg';
-import JsIcon from '@/assets/jsType.svg';
-import HtmlIcon from '@/assets/htmlType.svg';
-import CssIcon from '@/assets/cssType.svg';
-// import DefaultIcon from '@/assets/file.svg';
+import './index.css';
+import TsxIcon from '@/assets/fileIcons/tsxType.svg';
+import TsIcon from '@/assets/fileIcons/tsType.svg';
+import JsIcon from '@/assets/fileIcons/jsType.svg';
+import HtmlIcon from '@/assets/fileIcons/htmlType.svg';
+import CssIcon from '@/assets/fileIcons/cssType.svg';
+import DefaultIcon from '@/assets/directoryIcons/directoryIcon.svg';
 
 const extensionToIcon: Record<string, string> = {
   tsx: TsxIcon,
@@ -21,12 +22,13 @@ export interface FileProps {
 }
 
 const File = (props: FileProps) => {
-  // const icon = extensionToIcon[props.extension ?? ''] ?? DefaultIcon;
-  const icon = extensionToIcon[props.extension];
+  const icon = extensionToIcon[props.extension ?? ''] ?? DefaultIcon;
 
   return (
     <div className="file" style={{ marginLeft: `${props.depth ? props.depth * 5 : 0}px` }}>
-      <img className="icon" src={icon} alt="File icon"></img>
+      <div className="icon">
+        <img className="icon" src={icon} alt="File icon"></img>
+      </div>
       <span className="name">{props.name}</span>
     </div>
   )

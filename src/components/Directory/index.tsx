@@ -1,8 +1,8 @@
 import './index.css';
 
-import DirectoryIcon from '@/assets/directoryIcon.svg';
-import OpenedDirectory from '@/assets/openedDirectory.svg';
-import ClosedDirectory from '@/assets/closedDirectory.svg';
+import DirectoryIcon from '@/assets/directoryIcons/directoryIcon.svg';
+import OpenedDirectory from '@/assets/directoryIcons/openedDirectory.svg';
+import ClosedDirectory from '@/assets/directoryIcons/closedDirectory.svg';
 import File from '../File'
 import type { FileProps } from '../File'
 import { useState } from 'react';
@@ -19,8 +19,11 @@ const Directory = (props: DirectoryProps) => {
   const [opened, setOpened] = useState(props.opened);
   const depth = props.depth ?? 0;
 
-  const children = opened ? props.children.map((child, index) => {
-    if (child.type === 'directory')
+  console.log(props.children)
+
+  const children = opened ? props.children?.map((child, index) => {
+    console.log(child)
+    if (child.type == 'directory')
       return <Directory key={index} {...(child)} depth={depth+1} />;
     else
       return <File key={index} {...(child)} depth={depth+1} />;
