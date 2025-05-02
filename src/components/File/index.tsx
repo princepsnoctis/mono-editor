@@ -8,7 +8,6 @@ import JsIcon from '@/assets/fileIcons/jsType.svg';
 import HtmlIcon from '@/assets/fileIcons/htmlType.svg';
 import CssIcon from '@/assets/fileIcons/cssType.svg';
 import DefaultIcon from '@/assets/directoryIcons/directoryIcon.svg';
-import { useState } from 'react';
 
 const extensionToIcon: Record<string, string> = {
   tsx: TsxIcon,
@@ -32,11 +31,8 @@ const File = (props: FileProps) => {
 
   const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent the click event from bubbling up to parent elements
-    console.log(`Clicked on file: ${props.name}`);
     navigate(`/f/${encodeURIComponent(props.path)}`);
-    console.log(props.path);
   };
-
 
   return (
     <div className={"file"} style={{ paddingLeft: `${props.depth ? props.depth * 5 : 0}px` }} onClick={handleClick}>
