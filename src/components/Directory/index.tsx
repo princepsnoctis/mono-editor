@@ -19,8 +19,11 @@ const Directory = (props: DirectoryProps) => {
   const [opened, setOpened] = useState(props.opened);
   const depth = props.depth ?? 0;
 
-  const children = opened ? props.children.map((child, index) => {
-    if (child.type === 'directory')
+  console.log(props.children)
+
+  const children = opened ? props.children?.map((child, index) => {
+    console.log(child)
+    if (child.type == 'directory')
       return <Directory key={index} {...(child)} depth={depth+1} />;
     else
       return <File key={index} {...(child)} depth={depth+1} />;

@@ -4,6 +4,7 @@
   justify-content: flex-end;
   background-color: #1e1e1e;
   outline: 1px solid #333;
+  app-drag: drag;
 }
 
 .navigator-btn {
