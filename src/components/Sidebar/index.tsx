@@ -15,7 +15,7 @@ type FileInfo = {
 
 const Sidebar = () => {
   const [opened, setOpened] = useState(true);
-  const [path, setPath] = useState<string>('D:\\Programowanie\\Github\\mono-editor\\public\\projekt');
+  const [path, setPath] = useState<string>("assets/sample-project");
   const [files, setFiles] = useState<any>([]);
 
   const loadData = async (path: string): Promise<any[]> => {
