@@ -1,6 +1,6 @@
 import "./App.scss";
 
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import Decoration from "./components/Decoration";
 import Sidebar from "./components/Sidebar";

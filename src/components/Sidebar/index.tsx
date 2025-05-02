@@ -2,8 +2,6 @@ import './index.scss';
 
 import Directory from '../Directory';
 import File from '../File';
-import type { DirectoryProps } from '../Directory';
-import type { FileProps } from '../File';
 import { useEffect, useState } from 'react';
 
 import { invoke } from '@tauri-apps/api/core';
@@ -21,7 +19,7 @@ const Sidebar = () => {
   const loadData = async (path: string): Promise<any[]> => {
     const result = await invoke<FileInfo[]>('read_directory', { path });
     const mapped = await Promise.all(result.map(async (file: FileInfo) => {
-      const fullPath = `${path}\\${file.name}`;
+      const fullPath = `${path}/${file.name}`;
       if(file.is_dir) {
         const children = await loadData(fullPath);
         return {
@@ -37,6 +35,7 @@ const Sidebar = () => {
           is_dir: file.is_dir,
           type: 'file',
           extension: file.name.split('.').pop() ?? '',
+          path: fullPath
         }
       }
     }))
@@ -52,16 +51,15 @@ const Sidebar = () => {
       }
     };
 
-    console.log(path)
     const result = loadData(path);
     result.then(files => {
-      console.log(files);
       setFiles(files.map(file => {
         return {
           name: file.name,
           type: file.is_dir ? 'directory' : 'file',
           extension: file.is_dir ? '' : file.name.split('.').pop() ?? '',
-          children: file.children
+          children: file.children,
+          path: file.path
         }}
       ))
     })
@@ -71,18 +69,18 @@ const Sidebar = () => {
   }, []);
 
   const children = files.map((file: any, index: number) => {
+    console.log(file.path)
     if(file.type == 'directory') {
-      console.log(file.children)
       return <Directory key={file.name+index} name={file.name} type="directory" opened={true}>
         {file.children}
       </Directory>;
     }
     else
-      return <File key={file.name+index} name={file.name} extension={file.extension} type="file"/>
+      return <File key={file.name+index} name={file.name} extension={file.extension} path={file.path} type="file"/>
   });
 
   return (opened &&
-    <div className="files">
+    <div className="explorer">
       {children}
     </div>
   );

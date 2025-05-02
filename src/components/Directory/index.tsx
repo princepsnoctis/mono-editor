@@ -19,10 +19,7 @@ const Directory = (props: DirectoryProps) => {
   const [opened, setOpened] = useState(props.opened);
   const depth = props.depth ?? 0;
 
-  console.log(props.children)
-
   const children = opened ? props.children?.map((child, index) => {
-    console.log(child)
     if (child.type == 'directory')
       return <Directory key={index} {...(child)} depth={depth+1} />;
     else
@@ -31,7 +28,7 @@ const Directory = (props: DirectoryProps) => {
 
   return (
     <>
-      <div className="directory" onClick={() => setOpened(prev => !prev)} style={{ marginLeft: `${depth * 5}px` }}>
+      <div className="directory" onClick={() => setOpened(prev => !prev)} style={{ paddingLeft: `${depth * 5}px` }}>
         <div className="arrow">
           <img className="arrow-icon" src={opened ? OpenedDirectory : ClosedDirectory} alt="Opened or closed directory"></img>
         </div>
