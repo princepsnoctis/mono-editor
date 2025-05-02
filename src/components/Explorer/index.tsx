@@ -11,9 +11,9 @@ type FileInfo = {
   is_dir: boolean;
 };
 
-const Sidebar = () => {
+const Explorer = () => {
   const [opened, setOpened] = useState(true);
-  const [path, setPath] = useState<string>("assets/sample-project");
+  const [path] = useState<string>("assets/sample-project");
   const [files, setFiles] = useState<any>([]);
 
   const loadData = async (path: string): Promise<any[]> => {
@@ -69,7 +69,6 @@ const Sidebar = () => {
   }, []);
 
   const children = files.map((file: any, index: number) => {
-    console.log(file.path)
     if(file.type == 'directory') {
       return <Directory key={file.name+index} name={file.name} type="directory" opened={true}>
         {file.children}
@@ -86,4 +85,4 @@ const Sidebar = () => {
   );
 }
 
-export default Sidebar;
+export default Explorer;

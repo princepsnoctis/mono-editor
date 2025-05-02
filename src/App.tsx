@@ -3,7 +3,7 @@ import "./App.scss";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
 import Decoration from "./components/Decoration";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/Explorer";
 import Editor from "./pages/Editor";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
                     <Sidebar/>
 
                     <Routes>
-                        <Route path="*" element={<Editor />} />
+                        <Route path="/f/:uri/*" element={<Editor />} />
                     </Routes>
                 </div>
             </BrowserRouter>

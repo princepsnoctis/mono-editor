@@ -1,12 +1,12 @@
 import "./index.scss"
+import {useParams} from "react-router-dom";
 
-// import {useLocation} from "react-router-dom";
 
 function Editor() {
-    // const { pathname } = useLocation();
+    const { uri } = useParams();
 
     return (
-        <div className="editor"></div>
+        <div className="editor">{uri}</div>
     )
 }
 

@@ -33,7 +33,7 @@ const File = (props: FileProps) => {
   const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent the click event from bubbling up to parent elements
     console.log(`Clicked on file: ${props.name}`);
-    navigate(`/f/${encodeURI(props.path)}`);
+    navigate(`/f/${encodeURIComponent(props.path)}`);
     console.log(props.path);
   };
 
