@@ -1,0 +1,19 @@
+@use "../index.scss";
+
+.button {
+    &--decoration {
+        &--maximize {
+            svg * {
+                stroke: #797979;
+            }
+
+            &:hover {
+                background-color: #373737;
+
+                svg * {
+                    stroke: #ffffff;
+                }
+            }
+        }
+    }
+}

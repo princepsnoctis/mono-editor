@@ -17,7 +17,7 @@ const Files = () => {
       opened: true,
       children: [
         {
-          name: 'Button.tsx',
+          name: 'index.tsx',
           type: 'file',
           extension: 'tsx',
         },

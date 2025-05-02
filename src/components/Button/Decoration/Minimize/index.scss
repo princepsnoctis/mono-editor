@@ -1,0 +1,19 @@
+@use "../index.scss";
+
+.button {
+    &--decoration {
+        &--minimize {
+            svg * {
+                fill: #797979;
+            }
+
+            &:hover {
+                background-color: #373737;
+
+                svg * {
+                    fill: #ffffff;
+                }
+            }
+        }
+    }
+}

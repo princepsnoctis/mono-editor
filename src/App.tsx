@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 
 import Navigator from "./components/Navigator";
 import Terminal from "./components/Terminal";
