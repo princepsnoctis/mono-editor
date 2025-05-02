@@ -1,8 +1,8 @@
 import './index.css';
 
-import DirectoryIcon from '@/assets/directoryIcon.svg';
-import OpenedDirectory from '@/assets/openedDirectory.svg';
-import ClosedDirectory from '@/assets/closedDirectory.svg';
+import DirectoryIcon from '@/assets/directoryIcons/directoryIcon.svg';
+import OpenedDirectory from '@/assets/directoryIcons/openedDirectory.svg';
+import ClosedDirectory from '@/assets/directoryIcons/closedDirectory.svg';
 import File from '../File'
 import type { FileProps } from '../File'
 import { useState } from 'react';

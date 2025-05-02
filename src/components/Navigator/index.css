@@ -21,19 +21,19 @@
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.navigator-btn:not(#maximize-btn) svg {
+.navigator-btn#minimize-btn svg {
   fill: #808080;
 }
 
-.navigator-btn#maximize-btn svg {
+.navigator-btn:not(#minimize-btn) svg {
   stroke: #808080;
 }
 
-.navigator-btn#maximize-btn:hover svg {
+.navigator-btn:not(#minimize-btn):hover svg {
   stroke: white;
 }
 
-.navigator-btn:not(#maximize-btn):hover svg {
+.navigator-btn#minimize-btn:hover svg {
   fill: white;
 }
 
