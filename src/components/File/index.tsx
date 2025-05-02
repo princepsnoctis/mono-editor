@@ -4,7 +4,7 @@ import TsIcon from '@/assets/fileIcons/tsType.svg';
 import JsIcon from '@/assets/fileIcons/jsType.svg';
 import HtmlIcon from '@/assets/fileIcons/htmlType.svg';
 import CssIcon from '@/assets/fileIcons/cssType.svg';
-// import DefaultIcon from '@/assets/file.svg';
+import DefaultIcon from '@/assets/directoryIcons/directoryIcon.svg';
 
 const extensionToIcon: Record<string, string> = {
   tsx: TsxIcon,
@@ -22,8 +22,7 @@ export interface FileProps {
 }
 
 const File = (props: FileProps) => {
-  // const icon = extensionToIcon[props.extension ?? ''] ?? DefaultIcon;
-  const icon = extensionToIcon[props.extension];
+  const icon = extensionToIcon[props.extension ?? ''] ?? DefaultIcon;
 
   return (
     <div className="file" style={{ marginLeft: `${props.depth ? props.depth * 5 : 0}px` }}>

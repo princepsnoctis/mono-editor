@@ -2,13 +2,13 @@ import "./App.css";
 
 import Navigator from "./components/Navigator";
 import Terminal from "./components/Terminal";
-import Files from "./components/Files";
+import Sidebar from "./components/Sidebar";
 
 function App() {
   return (
     <main className="container">
       <Navigator />
-      <Files/>
+      <Sidebar/>
       <Terminal />
     </main>
   )
