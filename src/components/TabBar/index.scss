@@ -1,0 +1,29 @@
+.tab-bar {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.tab-bar > div {
+    border-bottom: 1px solid #333;
+}
+
+.right {
+    width: 100%;
+}
+
+.tab-bar-item {
+    padding: 10px;
+    border-right: 1px solid #333;
+    text-wrap: nowrap;
+}
+
+.tab-bar-item.active {
+    border-bottom: 1px solid transparent;
+    background-color: rgba(255, 255, 255, .03);
+}
+
+.tab-bar-item:hover {
+    background-color: rgba(255, 255, 255, .03);
+    cursor: pointer;
+}

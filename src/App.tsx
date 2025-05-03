@@ -5,6 +5,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Decoration from "./components/Decoration";
 import Sidebar from "./components/Explorer";
 import Editor from "./pages/Editor";
+import StartPage from "./pages/StartPage";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
 
                     <Routes>
                         <Route path="/f/:uri/*" element={<Editor />} />
+                        <Route path="*" element={<StartPage />} />
                     </Routes>
                 </div>
             </BrowserRouter>

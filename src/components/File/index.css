@@ -7,10 +7,11 @@
   gap: 5px;
   cursor: pointer;
   user-select: none;
+  padding: 12.5px 10px;
 }
 
 .file:hover, .file.active {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .icon {

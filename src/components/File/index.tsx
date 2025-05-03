@@ -1,6 +1,6 @@
 import './index.css';
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import TsxIcon from '@/assets/fileIcons/tsxType.svg';
 import TsIcon from '@/assets/fileIcons/tsType.svg';
@@ -27,6 +27,7 @@ export interface FileProps {
 
 const File = (props: FileProps) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const icon = extensionToIcon[props.extension ?? ''] ?? DefaultIcon;
 
   const handleClick = (event: React.MouseEvent) => {
@@ -34,8 +35,10 @@ const File = (props: FileProps) => {
     navigate(`/f/${encodeURIComponent(props.path)}`);
   };
 
+  const isActive = decodeURIComponent(pathname.split('/f/')[1]) == props.path;
+
   return (
-    <div className={"file"} style={{ paddingLeft: `${props.depth ? props.depth * 5 : 0}px` }} onClick={handleClick}>
+    <div className={`file ${isActive ? ' active' : ''}`} style={{ paddingLeft: `${props.depth ? props.depth * 5 : 0}px` }} onClick={handleClick}>
       <div className="icon">
         <img className="icon" src={icon} alt="File icon"></img>
       </div>
