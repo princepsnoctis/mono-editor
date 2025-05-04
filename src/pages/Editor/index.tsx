@@ -9,19 +9,12 @@ import TabBar from "../../components/TabBar";
 function Editor() {
     const { uri } = useParams();
     const [content, setContent] = useState("")
-    const [lineCount, setLineCount] = useState(1);
     const [startContent, setStartContent] = useState("")
     const editorRef = useRef<HTMLDivElement>(null);
 
     const handleInput = () => {
         const newContent = editorRef.current?.innerText ?? "";
         setContent(newContent);
-        console.log(content)
-        if(editorRef.current) {
-          const text = editorRef.current.innerText;
-          const lines = text.split("\n");
-          setLineCount(lines.length);
-        }
     }
     
     useEffect(() => {
@@ -50,9 +43,9 @@ function Editor() {
           </div>
           <div className="editor-container">
             <div className="lines-counter">
-              {Array.from({ length: lineCount }, (_, i) => (
+              {(editorRef.current && Array.from({ length: editorRef.current.children.length+1 }, (_, i) => (
                 <span key={i}>{i + 1}</span>
-              ))}
+              ))) || <span>1</span>}
             </div>
             <div className="editor-content" contentEditable suppressContentEditableWarning ref={editorRef} onInput={handleInput}>
               {startContent}
