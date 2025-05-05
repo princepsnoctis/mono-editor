@@ -9,6 +9,7 @@ import HtmlIcon from '@/assets/fileIcons/htmlType.svg';
 import CssIcon from '@/assets/fileIcons/cssType.svg';
 import DefaultIcon from '@/assets/directoryIcons/directoryIcon.svg';
 import FileType from '../../model/FileType';
+import { useFiles } from '../../contexts/Files';
 
 const extensionToIcon: Record<string, string> = {
   tsx: TsxIcon,
@@ -19,13 +20,14 @@ const extensionToIcon: Record<string, string> = {
 };
 
 const File = (props: FileType) => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const icon = extensionToIcon[props.extension ?? ''] ?? DefaultIcon;
 
+  const { openFile } = useFiles();
+
   const handleClick = (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent the click event from bubbling up to parent elements
-    navigate(`/f/${encodeURIComponent(props.path)}`);
+    openFile(props);
   };
 
   const isActive = decodeURIComponent(pathname.split('/f/')[1]) == props.path;

@@ -1,13 +1,16 @@
-import { useState } from 'react';
 import './index.scss'
+import { useFiles } from '../../contexts/Files';
+import { useLocation } from 'react-router-dom';
 
 const TabBar = () => {
-    const [files, setFiles] = useState([{name: "File1"}, {name: "Sth"}, {name: "New File"}]);
-    const [activeTab, setActiveTab] = useState(1);
+    const { pathname } = useLocation();
+    const { openFile, openedFiles } = useFiles();
 
-    const filesEl = files.map((file, index) => {
+    const activeFile = decodeURIComponent(pathname.split('/f/')[1])
+
+    const filesEl = openedFiles.map((file, index) => {
         return (
-            <div key={index+1} className={`tab-bar-item ${activeTab == index ? 'active' : ''}`} onClick={() => setActiveTab(index)}>
+            <div key={index+1} className={`tab-bar-item ${activeFile == file.path ? 'active' : ''}`} onClick={() => openFile(file)}>
                 {file.name}
             </div>
         )

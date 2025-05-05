@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { invoke } from "@tauri-apps/api/core";
@@ -15,6 +15,7 @@ type FileInfo = {
 const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
 
+    const [path, setPath] = useState<string>("assets/sample-project");
     const [files, setFiles] = useState<any[]>([]);
     const [openedFiles, setOpenedFiles] = useState<FileType[]>([]);
 
@@ -70,14 +71,20 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const openFile = (file: FileType) => {
+        navigate(`/f/${encodeURIComponent(file.path)}`);
+        if(openedFiles.find((f) => f.path == file.path))
+            return;
         setOpenedFiles((prevFiles) => [...prevFiles, file]);
-        navigate(`/f/${file.path}`);
     };
 
     const closeFile = (file: FileType) => {
         setOpenedFiles((prevFiles) => prevFiles.filter((f) => f.path != file.path));
-        navigate(`/f/${files[files.length-1].path}`);
+        navigate(`/f/${encodeURIComponent(files[files.length-1].path)}`);
     };
+
+    useEffect(() => {
+        loadFiles(path);
+    }, [])
 
 
     return (
