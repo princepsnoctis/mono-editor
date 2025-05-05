@@ -5,12 +5,18 @@ import { useEffect, useRef, useState } from "react";
 import {useParams} from "react-router-dom";
 
 import TabBar from "../../components/TabBar";
+import { useFiles } from "../../contexts/Files";
 
 function Editor() {
     const { uri } = useParams();
     const [content, setContent] = useState("")
     const [startContent, setStartContent] = useState("")
     const editorRef = useRef<HTMLDivElement>(null);
+
+    // Context
+
+    const { files } = useFiles();
+    console.log("Files: ", files);
 
     const handleInput = () => {
         const newContent = editorRef.current?.innerText ?? "";

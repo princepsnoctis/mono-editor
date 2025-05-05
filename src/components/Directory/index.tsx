@@ -4,18 +4,11 @@ import DirectoryIcon from '@/assets/directoryIcons/directoryIcon.svg';
 import OpenedDirectory from '@/assets/directoryIcons/openedDirectory.svg';
 import ClosedDirectory from '@/assets/directoryIcons/closedDirectory.svg';
 import File from '../File'
-import type { FileProps } from '../File'
 import { useState } from 'react';
 
-export interface DirectoryProps {
-  name: string;
-  children: Array<DirectoryProps | FileProps>;
-  type: 'directory';
-  opened: boolean;
-  depth?: number;
-}
+import DirectoryType from '../../model/DirectoryType'
 
-const Directory = (props: DirectoryProps) => {
+const Directory = (props: DirectoryType) => {
   const [opened, setOpened] = useState(props.opened);
   const depth = props.depth ?? 0;
 

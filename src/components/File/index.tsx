@@ -8,6 +8,7 @@ import JsIcon from '@/assets/fileIcons/jsType.svg';
 import HtmlIcon from '@/assets/fileIcons/htmlType.svg';
 import CssIcon from '@/assets/fileIcons/cssType.svg';
 import DefaultIcon from '@/assets/directoryIcons/directoryIcon.svg';
+import FileType from '../../model/FileType';
 
 const extensionToIcon: Record<string, string> = {
   tsx: TsxIcon,
@@ -17,15 +18,7 @@ const extensionToIcon: Record<string, string> = {
   html: HtmlIcon,
 };
 
-export interface FileProps {
-  name: string;
-  type: 'file';
-  path: string;
-  extension: string;
-  depth?: number;
-}
-
-const File = (props: FileProps) => {
+const File = (props: FileType) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const icon = extensionToIcon[props.extension ?? ''] ?? DefaultIcon;

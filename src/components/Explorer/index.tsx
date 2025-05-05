@@ -5,6 +5,7 @@ import File from '../File';
 import { useEffect, useState } from 'react';
 
 import { invoke } from '@tauri-apps/api/core';
+import { useFiles } from '../../contexts/Files';
 
 type FileInfo = {
   name: string;
@@ -14,34 +15,7 @@ type FileInfo = {
 const Explorer = () => {
   const [opened, setOpened] = useState(true);
   const [path] = useState<string>("assets/sample-project");
-  const [files, setFiles] = useState<any>([]);
-
-  const loadData = async (path: string): Promise<any[]> => {
-    const result = await invoke<FileInfo[]>('read_directory', { path });
-    const mapped = await Promise.all(result.map(async (file: FileInfo) => {
-      const fullPath = `${path}/${file.name}`;
-      if(file.is_dir) {
-        const children = await loadData(fullPath);
-        return {
-          name: file.name,
-          is_dir: file.is_dir,
-          type: 'directory',
-          children: children ?? [],
-        }
-      }
-      else {
-        return {
-          name: file.name,
-          is_dir: file.is_dir,
-          type: 'file',
-          extension: file.name.split('.').pop() ?? '',
-          path: fullPath
-        }
-      }
-    }))
-
-    return mapped;
-  }
+  const { files, loadFiles } = useFiles();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -51,18 +25,7 @@ const Explorer = () => {
       }
     };
 
-    const result = loadData(path);
-    result.then(files => {
-      setFiles(files.map(file => {
-        return {
-          name: file.name,
-          type: file.is_dir ? 'directory' : 'file',
-          extension: file.is_dir ? '' : file.name.split('.').pop() ?? '',
-          children: file.children,
-          path: file.path
-        }}
-      ))
-    })
+    loadFiles(path)
   
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
