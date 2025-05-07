@@ -1,6 +1,6 @@
 import './index.css';
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import TsxIcon from '@/assets/fileIcons/tsxType.svg';
 import TsIcon from '@/assets/fileIcons/tsType.svg';

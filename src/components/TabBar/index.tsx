@@ -1,12 +1,29 @@
 import './index.scss'
 import { useFiles } from '../../contexts/Files';
 import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const TabBar = () => {
     const { pathname } = useLocation();
     const { openFile, openedFiles, closeFile } = useFiles();
 
     const activeFile = decodeURIComponent(pathname.split('/f/')[1])
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+          if (event.ctrlKey) {
+            const num = parseInt(event.key, 10);
+            if (!isNaN(num) && num >= 1 && num <= 9) {
+                event.preventDefault();
+                const file = openedFiles[num - 1];
+                if (file) openFile(file);
+            }
+          }
+        };
+      
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [openedFiles]);
 
     const filesEl = openedFiles.map((file, index) => {
         return (

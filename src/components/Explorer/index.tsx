@@ -10,7 +10,7 @@ import { open } from '@tauri-apps/plugin-dialog';
 
 const Explorer = () => {
   const [opened, setOpened] = useState(true);
-  const { files, setPath } = useFiles();
+  const { files, path, setPath } = useFiles();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -46,9 +46,11 @@ const Explorer = () => {
   return (opened &&
     <div className="explorer">
       {children}
-      <button className="open-folder" onClick={openFolder}>
-        Open Folder
-      </button>
+      { path == '' && 
+        <button className="open-folder" onClick={openFolder}>
+          Open Folder
+        </button>
+      }
     </div>
   );
 }
