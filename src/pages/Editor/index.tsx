@@ -18,34 +18,50 @@ function Editor() {
   };
 
   useEffect(() => {
+    console.log(uri?.slice(18, uri.length));
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key.toLowerCase() == 's') {
+        if(!uri)
+          return;
+        event.preventDefault();
+        console.log(content);
+        invoke("save_to_file", { path: "D:/Programowanie/Github/mono-editor/sample-project/" + uri.slice(18, uri.length), content: content })
+        .then(() => {
+          console.log("File saved successfully!");
+        })
+        .catch((err) => {
+          console.error("Failed to save file: " + err);
+        });
+      }
+    };
+  
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [content]);
+
+  useEffect(() => {
     if (uri) {
       // Load file content from Tauri
       invoke("read_file_content", { path: uri })
         .then((res) => {
           setStartContent(res as string);
+          setContent(res as string);
         })
         .catch((err) => {
-          console.error("Failed to read file:", err);
-          setStartContent(`Error loading file: ${err}`);
+          const errorMsg = "Failed to read file: " + err;
+          console.error(errorMsg);
+          setStartContent(errorMsg);
+          setContent(errorMsg);
         });
     }
   }, [uri]);
 
-  useEffect(() => {
-    handleInput(); // initialize line count on mount
-  }, []);
-
   function getLogicalLineCount(text: string) {
     // Replace 2+ newlines with just 1
-    return text.replace(/\n{2,}/g, "\n").split("\n").length;
+    return text.replace(/\n{2,}/g, "\n").split("\n").length || 1;
   }
 
-  const lineCount = getLogicalLineCount(startContent);
-  useEffect(() => {
-    console.log("Line count:", lineCount);
-    console.log(uri);
-    console.log(startContent);
-  }, [startContent])
+  const lineCount = getLogicalLineCount(content);
 
   return (
     <div className="editor">
@@ -54,10 +70,9 @@ function Editor() {
       </div>
       <div className="editor-container">
         <div className="lines-counter">
-          {(editorRef.current &&
-            Array.from({ length: lineCount }, (_, i) => (
+          {Array.from({ length: lineCount }, (_, i) => (
               <span key={i}>{i + 1}</span>
-            ))) || <span>1</span>}
+            ))}
         </div>
         <div
           className="editor-content"

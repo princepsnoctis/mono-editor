@@ -15,7 +15,7 @@ type FileInfo = {
 const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
 
-    const [path, setPath] = useState<string>("assets/sample-project");
+    const [path, setPath] = useState<string>("../sample-project");
     const [files, setFiles] = useState<any[]>([]);
     const [openedFiles, setOpenedFiles] = useState<FileType[]>([]);
 

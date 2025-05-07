@@ -34,6 +34,6 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "resources": ["assets/sample-project"]
+    "resources": ["../sample-project"]
   }
 }
