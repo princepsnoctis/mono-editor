@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react';
 
 import { useFiles } from '../../contexts/Files';
 
+import { open } from '@tauri-apps/plugin-dialog';
+
 const Explorer = () => {
   const [opened, setOpened] = useState(true);
-  const { files } = useFiles();
+  const { files, setPath } = useFiles();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -21,6 +23,15 @@ const Explorer = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  const openFolder = async () => {
+    const directory = await open({
+      multiple: false,
+      directory: true,
+    });
+    console.log(directory);
+    setPath(directory ?? '');
+  }
 
   const children = files.map((file: any, index: number) => {
     if(file.type == 'directory') {
@@ -35,6 +46,9 @@ const Explorer = () => {
   return (opened &&
     <div className="explorer">
       {children}
+      <button className="open-folder" onClick={openFolder}>
+        Open Folder
+      </button>
     </div>
   );
 }

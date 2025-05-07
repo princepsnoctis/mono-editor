@@ -8,7 +8,7 @@ import TabBar from "../../components/TabBar";
 import { useFiles } from "../../contexts/Files";
 
 function Editor() {
-  const { openFile, openedFiles, setOpenedFiles } = useFiles();
+  const { path, openFile, openedFiles, setOpenedFiles } = useFiles();
   const { uri } = useParams();
   const [content, setContent] = useState("");
   const [startContent, setStartContent] = useState("");
@@ -40,7 +40,7 @@ function Editor() {
         if(!uri)
           return;
         event.preventDefault();
-        invoke("save_to_file", { path: "D:/Programowanie/Github/mono-editor/sample-project/" + uri.slice(18, uri.length), content: content })
+        invoke("save_to_file", { path: path + uri.slice(18, uri.length), content: content })
         .catch((err) => {
           console.error("Failed to save file: " + err);
         });

@@ -15,7 +15,7 @@ type FileInfo = {
 const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
 
-    const [path, setPath] = useState<string>("../sample-project");
+    const [path, setPath] = useState<string>("");
     const [files, setFiles] = useState<(FileType | DirectoryType)[]>([]);
     const [openedFiles, setOpenedFiles] = useState<FileType[]>([]);
 
@@ -29,6 +29,9 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const loadData = async (path: string): Promise<any[]> => {
+        if(path == "") {
+            return [];
+        }
         const result = await invoke<FileInfo[]>('read_directory', { path });
         const mapped = await Promise.all(result.map(async (file: FileInfo) => {
             const fullPath = `${path}/${file.name}`;
@@ -97,6 +100,8 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     const contextValue = useMemo(() => ({
+        path,
+        setPath,
         files,
         openedFiles,
         setOpenedFiles,
@@ -105,7 +110,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         createDirectory,
         openFile,
         closeFile
-    }), [files, openedFiles, setOpenedFiles, loadFiles, createFile, createDirectory, openFile, closeFile]);
+    }), [path, setPath, files, openedFiles, setOpenedFiles, loadFiles, createFile, createDirectory, openFile, closeFile]);
     
     return (
         <FilesContext.Provider value={contextValue}>
