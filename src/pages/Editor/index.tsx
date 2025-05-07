@@ -44,15 +44,19 @@ function Editor() {
       // Load file content from Tauri
       invoke("read_file_content", { path: uri })
         .then((res) => {
-          setStartContent(res as string);
           setContent(res as string);
+          setStartContent(res as string);
         })
         .catch((err) => {
           const errorMsg = "Failed to read file: " + err;
           console.error(errorMsg);
-          setStartContent(errorMsg);
           setContent(errorMsg);
+          setStartContent(errorMsg);
         });
+    }
+    else {
+      setContent("")
+      setStartContent("")
     }
   }, [uri]);
 
@@ -65,9 +69,7 @@ function Editor() {
 
   return (
     <div className="editor">
-      <div>
-        <TabBar />
-      </div>
+      <TabBar />
       <div className="editor-container">
         <div className="lines-counter">
           {Array.from({ length: lineCount }, (_, i) => (

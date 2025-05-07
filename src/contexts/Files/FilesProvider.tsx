@@ -6,6 +6,7 @@ import { invoke } from "@tauri-apps/api/core";
 import FileType from "../../model/FileType";
 import DirectoryType from "../../model/DirectoryType";
 import FilesContext from "./FilesContext";
+import { encode } from "punycode";
 
 type FileInfo = {
     name: string;
@@ -78,8 +79,13 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const closeFile = (file: FileType) => {
-        setOpenedFiles((prevFiles) => prevFiles.filter((f) => f.path != file.path));
-        navigate(`/f/${encodeURIComponent(files[files.length-1].path)}`);
+        const newFiles = openedFiles.filter(f => f.path !== file.path);
+        const targetFile = newFiles[newFiles.length - 1];
+        const path = !targetFile ? '/' : `/f/${encodeURIComponent(targetFile.path)}`;
+        setOpenedFiles(newFiles);
+        navigate(path);
+        console.log(path)
+        console.log(files[files.length-2])
     };
 
     useEffect(() => {
