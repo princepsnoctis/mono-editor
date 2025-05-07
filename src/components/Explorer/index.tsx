@@ -29,7 +29,7 @@ const Explorer = () => {
       </Directory>;
     }
     else
-      return <File key={file.name+index} name={file.name} extension={file.extension} path={file.path} type="file"/>
+      return <File key={file.name+index} name={file.name} extension={file.extension} path={file.path} type="file" isEdited={file.isEdited}/>
   });
 
   return (opened &&

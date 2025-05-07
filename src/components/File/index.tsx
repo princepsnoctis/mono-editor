@@ -20,6 +20,7 @@ const extensionToIcon: Record<string, string> = {
 };
 
 const File = (props: FileType) => {
+  console.log(props.isEdited)
   const { pathname } = useLocation();
   const icon = extensionToIcon[props.extension ?? ''] ?? DefaultIcon;
 

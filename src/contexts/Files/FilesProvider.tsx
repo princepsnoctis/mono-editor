@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { invoke } from "@tauri-apps/api/core";
@@ -6,7 +6,6 @@ import { invoke } from "@tauri-apps/api/core";
 import FileType from "../../model/FileType";
 import DirectoryType from "../../model/DirectoryType";
 import FilesContext from "./FilesContext";
-import { encode } from "punycode";
 
 type FileInfo = {
     name: string;
@@ -17,7 +16,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
 
     const [path, setPath] = useState<string>("../sample-project");
-    const [files, setFiles] = useState<any[]>([]);
+    const [files, setFiles] = useState<(FileType | DirectoryType)[]>([]);
     const [openedFiles, setOpenedFiles] = useState<FileType[]>([]);
 
     const createFile = (file: FileType) => {
@@ -58,16 +57,26 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
 
     const loadFiles = (path: string) => {
         const result = loadData(path);
-        result.then(files => {
-            setFiles(files.map(file => {
-                return {
-                    name: file.name,
-                    type: file.is_dir ? 'directory' : 'file',
-                    extension: file.is_dir ? '' : file.name.split('.').pop() ?? '',
-                    children: file.children,
-                    path: file.path
-                }}
-            ))
+        result.then(resultFiles => {
+            setFiles(resultFiles.map(file => {
+                if(file.is_dir) {
+                    return {
+                        name: file.name,
+                        children: file.children,
+                        type: 'directory',
+                        opened: false,
+                    }
+                }
+                else {
+                    return {
+                        name: file.name,
+                        type: 'file',
+                        path: file.path,
+                        extension: file.name.split('.').pop(),
+                        isEdited: false,
+                    }
+                }
+            }) as (FileType | DirectoryType)[])
         })
     }
 
@@ -79,22 +88,27 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const closeFile = (file: FileType) => {
-        const newFiles = openedFiles.filter(f => f.path !== file.path);
-        const targetFile = newFiles[newFiles.length - 1];
-        const path = !targetFile ? '/' : `/f/${encodeURIComponent(targetFile.path)}`;
-        setOpenedFiles(newFiles);
-        navigate(path);
-        console.log(path)
-        console.log(files[files.length-2])
+        setOpenedFiles(prevFiles => prevFiles.filter(f => f.path != file.path));
     };
 
     useEffect(() => {
         loadFiles(path);
-    }, [])
+    }, [path])
 
 
+    const contextValue = useMemo(() => ({
+        files,
+        openedFiles,
+        setOpenedFiles,
+        loadFiles,
+        createFile,
+        createDirectory,
+        openFile,
+        closeFile
+    }), [files, openedFiles, setOpenedFiles, loadFiles, createFile, createDirectory, openFile, closeFile]);
+    
     return (
-        <FilesContext.Provider value={{ files, openedFiles, loadFiles, createFile, createDirectory, openFile, closeFile }}>
+        <FilesContext.Provider value={contextValue}>
             {children}
         </FilesContext.Provider>
     );

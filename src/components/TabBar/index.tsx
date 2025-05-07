@@ -19,7 +19,7 @@ const TabBar = () => {
                             <path d="M-2 2 L2 -2" fill="white" stroke="white"/>
                         </svg>
                     </div>
-                    <div className="edited">
+                    <div className={`edited ${!file.isEdited ? 'hidden' : ''}`}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 4 4" fill="none" width="75%" height="75%">
                             <circle cx="0" cy="0" r="2" fill="white"/>
                         </svg>
@@ -30,10 +30,12 @@ const TabBar = () => {
     })
 
     return (
-        <div className="tab-bar">
+        openedFiles.length > 0 && (
+            <div className="tab-bar">
             { filesEl }
             <div className="right"></div>
-        </div>
+            </div>
+        )
     )
 }
 

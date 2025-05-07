@@ -4,6 +4,7 @@ interface FileType {
     path: string;
     extension: string;
     depth?: number;
+    isEdited: boolean;
 }
 
 export default FileType;
