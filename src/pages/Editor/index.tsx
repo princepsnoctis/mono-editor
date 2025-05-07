@@ -14,6 +14,8 @@ function Editor() {
   const [startContent, setStartContent] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  
+  console.log(uri)
 
   const handleInput = () => {
     const newContent = editorRef.current?.innerText ?? "";
@@ -40,7 +42,7 @@ function Editor() {
         if(!uri)
           return;
         event.preventDefault();
-        invoke("save_to_file", { path: path + uri.slice(18, uri.length), content: content })
+        invoke("save_to_file", { path: uri, content: content })
         .catch((err) => {
           console.error("Failed to save file: " + err);
         });
@@ -52,7 +54,7 @@ function Editor() {
       
           // Update the openedFiles state
           setOpenedFiles((prevFiles) =>
-            prevFiles.map(file => file.path === updatedFile.path ? updatedFile : file)
+            prevFiles.map(file => file.path == updatedFile.path ? updatedFile : file)
           );
         }
       }

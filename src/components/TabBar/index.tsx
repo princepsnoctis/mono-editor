@@ -2,6 +2,7 @@ import './index.scss'
 import { useFiles } from '../../contexts/Files';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import FileType from '../../model/FileType';
 
 const TabBar = () => {
     const { pathname } = useLocation();
@@ -25,9 +26,16 @@ const TabBar = () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
       }, [openedFiles]);
 
+    const handleTabMouseDown = (e: React.MouseEvent, file: FileType) => {
+        if (e.button === 1) { // Middle mouse button
+          e.preventDefault(); // Prevent browser default (e.g. auto-scroll)
+          closeFile(file);
+        }
+      };
+
     const filesEl = openedFiles.map((file, index) => {
         return (
-            <div key={index+1} className={`tab-bar-item ${activeFile == file.path ? 'active' : ''}`} onClick={() => openFile(file)}>
+            <div key={index+1} className={`tab-bar-item ${activeFile == file.path ? 'active' : ''}`} onClick={() => openFile(file)} onMouseDown={(e) => handleTabMouseDown(e, file)}>
                 {file.name}
                 <div className="icons">
                     <div className="close" onClick={() => closeFile(file)}>
