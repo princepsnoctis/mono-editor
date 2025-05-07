@@ -40,7 +40,12 @@ function Editor() {
     return text.replace(/\n{2,}/g, "\n").split("\n").length;
   }
 
-  const lineCount = getLogicalLineCount(editorRef.current?.innerText ?? "");
+  const lineCount = getLogicalLineCount(startContent);
+  useEffect(() => {
+    console.log("Line count:", lineCount);
+    console.log(uri);
+    console.log(startContent);
+  }, [startContent])
 
   return (
     <div className="editor">
