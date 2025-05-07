@@ -8,14 +8,12 @@ import TabBar from "../../components/TabBar";
 import { useFiles } from "../../contexts/Files";
 
 function Editor() {
-  const { path, openFile, openedFiles, setOpenedFiles } = useFiles();
+  const { openFile, openedFiles, setOpenedFiles } = useFiles();
   const { uri } = useParams();
   const [content, setContent] = useState("");
   const [startContent, setStartContent] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  
-  console.log(uri)
 
   const handleInput = () => {
     const newContent = editorRef.current?.innerText ?? "";
@@ -91,7 +89,7 @@ function Editor() {
     } else {
         openFile(openedFiles[openedFiles.length - 1]);
     }
-}, [openedFiles]);
+  }, [openedFiles.length]);
 
   function getLogicalLineCount(text: string) {
     // Replace 2+ newlines with just 1

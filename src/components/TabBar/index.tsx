@@ -1,14 +1,12 @@
 import './index.scss'
 import { useFiles } from '../../contexts/Files';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import FileType from '../../model/FileType';
 
 const TabBar = () => {
-    const { pathname } = useLocation();
+    const { uri } = useParams();
     const { openFile, openedFiles, closeFile } = useFiles();
-
-    const activeFile = decodeURIComponent(pathname.split('/f/')[1])
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -35,7 +33,7 @@ const TabBar = () => {
 
     const filesEl = openedFiles.map((file, index) => {
         return (
-            <div key={index+1} className={`tab-bar-item ${activeFile == file.path ? 'active' : ''}`} onClick={() => openFile(file)} onMouseDown={(e) => handleTabMouseDown(e, file)}>
+            <div key={index+1} className={`tab-bar-item ${uri == file.path ? 'active' : ''}`} onClick={() => openFile(file)} onMouseDown={(e) => handleTabMouseDown(e, file)}>
                 {file.name}
                 <div className="icons">
                     <div className="close" onClick={() => closeFile(file)}>

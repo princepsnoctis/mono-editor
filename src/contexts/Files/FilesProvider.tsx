@@ -50,7 +50,8 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
                     is_dir: file.is_dir,
                     type: 'file' as const,
                     extension: file.name.split('.').pop() ?? '',
-                    path: fullPath
+                    path: fullPath,
+                    isEdited: false,
                 }
             }
         }))
