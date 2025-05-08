@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { invoke } from "@tauri-apps/api/core";
+import { mkdir } from '@tauri-apps/plugin-fs';
 
 import FileType from "../../model/FileType";
 import DirectoryType from "../../model/DirectoryType";
@@ -19,13 +20,16 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     const [files, setFiles] = useState<(FileType | DirectoryType)[]>([]);
     const [openedFiles, setOpenedFiles] = useState<FileType[]>([]);
 
-    const createFile = (file: FileType) => {
-        setFiles((prevFiles) => [...prevFiles, file]);
-        navigate(`/f/${file.path}`);
+    const createFile = async (file: FileType) => {
+        await invoke<void>('create_file', { path: file.path, content: "" });
+        await loadFiles(path);
+        openFile(file);
     };
 
-    const createDirectory = (directory: DirectoryType) => {
-        setFiles((prevFiles) => [...prevFiles, directory]);
+    const createDirectory = async (directory: DirectoryType) => {
+        console.log(directory)
+        await mkdir(directory.path)
+        loadFiles(path)
     }
 
     const loadData = async (path: string): Promise<any[]> => {
@@ -43,6 +47,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
                     type: 'directory' as const,
                     path: fullPath,
                     children: children ?? [],
+                    opened: false,
                 }
             }
             else {
@@ -60,31 +65,28 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         return mapped;
     }
 
-    const loadFiles = (path: string) => {
-        const result = loadData(path);
-        result.then(resultFiles => {
-            setFiles(resultFiles.map(file => {
-                if(file.is_dir) {
-                    return {
-                        name: file.name,
-                        children: file.children,
-                        path: file.path,
-                        type: 'directory',
-                        opened: false,
-                    }
+    const loadFiles = async (path: string): Promise<void> => {
+        const result = await loadData(path);
+        setFiles(result.map(file => {
+            if(file.is_dir) {
+                return {
+                    name: file.name,
+                    children: file.children,
+                    path: file.path,
+                    type: 'directory',
+                    opened: false,
                 }
-                else {
-                    return {
-                        name: file.name,
-                        type: 'file',
-                        path: file.path,
-                        extension: file.name.split('.').pop(),
-                        isEdited: false,
-                    }
+            }
+            else {
+                return {
+                    name: file.name,
+                    type: 'file',
+                    path: file.path,
+                    extension: file.name.split('.').pop(),
+                    isEdited: false,
                 }
-            }) as (FileType | DirectoryType)[])
-        })
-        console.log(files)
+            }
+        }));
     }
 
     const openFile = (file: FileType) => {
