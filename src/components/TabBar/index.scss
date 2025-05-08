@@ -1,12 +1,10 @@
 .tab-bar {
+    height: 40px;
     display: flex;
     width: 100%;
     justify-content: flex-start;
-    background-color: #1e1e1e;
-}
-
-.tab-bar > div {
-    border-bottom: 1px solid #333;
+    background-color: #161616;
+    border-bottom: 1px solid #2C2C2C;
 }
 
 .right {
@@ -14,14 +12,17 @@
 }
 
 .tab-bar-item {
-    padding: 10px;
-    border-right: 1px solid #333;
+    width: 150px;
+    padding: 0 15px;
+    flex-shrink: 0;
     text-wrap: nowrap;
     display: flex;
+    font-size: 12px;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .tab-bar-item.active {
-    border-bottom: 1px solid transparent;
     background-color: #161616;
 }
 
