@@ -1,6 +1,6 @@
 import "./index.scss"
 
-import Logo from "@tauri/icons/Square310x310Logo.png"
+import Logo from "@assets/Square310x310Logo.png"
 
 function StartPage() {
     return (

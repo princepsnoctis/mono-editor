@@ -10,7 +10,7 @@ import CssIcon from '@/assets/fileIcons/cssType.svg';
 import DefaultIcon from '@/assets/directoryIcons/directoryIcon.svg';
 import FileType from '../../model/FileType';
 import { useFiles } from '../../contexts/Files';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import FileMenu from '../FileMenu';
 
 import { rename } from '@tauri-apps/plugin-fs';
@@ -92,7 +92,7 @@ const File = (props: FileType) => {
           };
         }
       
-        return file; // Return unchanged file if no match
+        return file; // Return unchanged the file if no match
       };
       
       setFiles(prev => prev.map(file => updateFileName(file, props.path, editedText)));
