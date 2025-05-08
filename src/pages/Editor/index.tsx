@@ -63,7 +63,7 @@ function Editor() {
   }, [content]);
 
   useEffect(() => {
-    if (uri) {
+    if (uri && uri != '/') {
       // Load file content from Tauri
       invoke("read_file_content", { path: uri })
         .then((res) => {
@@ -98,7 +98,7 @@ function Editor() {
 
   const lineCount = getLogicalLineCount(content);
 
-  return (
+  return ( uri &&
     <div className="editor">
       <TabBar/>
       <div className="editor-container">

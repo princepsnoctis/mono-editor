@@ -29,8 +29,7 @@ const Explorer = () => {
       multiple: false,
       directory: true,
     });
-    console.log(directory);
-    setPath(directory ?? '');
+    setPath(directory?.replace(/\\/g, '/') ?? '');
   }
 
   const children = files.map((file: any, index: number) => {

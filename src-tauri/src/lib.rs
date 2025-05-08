@@ -11,7 +11,10 @@ pub struct FileInfo {
 }
 
 #[command]
-fn read_directory(path: String) -> Result<Vec<FileInfo>, String> {
+fn read_directory(mut path: String) -> Result<Vec<FileInfo>, String> {
+    // Normalize the path: replace backslashes with forward slashes
+    path = path.replace("\\", "/");
+
     let entries = fs::read_dir(PathBuf::from(path)).map_err(|e| e.to_string())?;
 
     let mut files = Vec::new();
@@ -45,6 +48,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_fs::init())
         .invoke_handler(tauri::generate_handler![
             read_directory,
             read_file_content,

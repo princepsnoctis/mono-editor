@@ -104,6 +104,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         path,
         setPath,
         files,
+        setFiles,
         openedFiles,
         setOpenedFiles,
         loadFiles,
@@ -111,7 +112,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         createDirectory,
         openFile,
         closeFile
-    }), [path, setPath, files, openedFiles, setOpenedFiles, loadFiles, createFile, createDirectory, openFile, closeFile]);
+    }), [path, setPath, files, setFiles, openedFiles, setOpenedFiles, loadFiles, createFile, createDirectory, openFile, closeFile]);
     
     return (
         <FilesContext.Provider value={contextValue}>
