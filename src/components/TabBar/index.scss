@@ -4,11 +4,11 @@
     width: 100%;
     justify-content: flex-start;
     background-color: #161616;
-    border-bottom: 1px solid #2C2C2C;
 }
 
 .right {
     width: 100%;
+    border-bottom: 1px solid #2C2C2C;
 }
 
 .tab-bar-item {
@@ -20,10 +20,21 @@
     font-size: 12px;
     align-items: center;
     justify-content: space-between;
+    border-right: #313131;
+    border-bottom: 1px solid #2C2C2C;
 }
 
 .tab-bar-item.active {
     background-color: #161616;
+    border-bottom: transparent;
+}
+
+.tab-bar-item.active:not(:first-child) {
+    border-left: 1px solid #2c2c2c;
+}
+
+.tab-bar-item.active:not(:last-child) {
+    border-right: 1px solid #2c2c2c;
 }
 
 .tab-bar-item:hover {
@@ -31,7 +42,7 @@
 }
 
 .tab-bar-item:not(.active):hover {
-    background-color: rgba(255, 255, 255, .03);
+    background-color: rgba(255, 255, 255, .06);
 }
 
 .tab-bar-item .icons {
@@ -39,18 +50,31 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: 12px;
+    width: 16px;
     margin-left: 5px;
 }
 
-.tab-bar-item .icons .close, .tab-bar-item .icons .hidden {
+.tab-bar-item .icons > div {
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab-bar-item .icons .close {
     display: none;
 }
 
-.tab-bar-item .icons:hover .close {
+.tab-bar-item:hover .close {
     display: flex;
 }
 
-.tab-bar-item .icons:hover .edited {
+.tab-bar-item:hover .edited {
     display: none;
+}
+
+.tab-bar-item .close:hover {
+    display: flex;
+    background-color: rgba(255, 255, 255, .2);
 }

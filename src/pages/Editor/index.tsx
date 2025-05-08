@@ -86,9 +86,8 @@ function Editor() {
     }
   }, [openedFiles.length]);
 
-  // ✅ Updated line count function to collapse duplicate newlines
   function getLogicalLineCount(text: string) {
-    return text.split('\n\n').flatMap(part => part.split('\n')).length + 1;
+    return text.split('\n\n').flatMap(part => part.split('\n')).length;
   }
 
   const lineCount = getLogicalLineCount(content);
@@ -109,7 +108,6 @@ function Editor() {
               suppressContentEditableWarning
               ref={editorRef}
               onInput={handleInput}
-              // ✅ Handle Enter manually to avoid double \n
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
