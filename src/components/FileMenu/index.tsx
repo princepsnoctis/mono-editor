@@ -17,15 +17,18 @@ const FileMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
     const { path, loadFiles } = useFiles();
 
     const renameFile = () => {
-        console.log(props.file);
         props.edit();
         props.closeMenu();
     };
 
     const deleteFile = () => {
-        // Attempt to remove the file from the file system
         remove(props.file.path)
             .then(() => {
+                /* 
+                
+                    ZOPTYMALIZUJ
+
+                */
                 loadFiles(path)
             })
             .catch((error) => {

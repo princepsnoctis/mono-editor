@@ -13,7 +13,6 @@ import { rename } from '@tauri-apps/plugin-fs';
 import DirectoryMenu from '../DirectoryMenu';
 
 const Directory = (props: DirectoryType) => {
-  console.log(props.opened)
   const [opened, setOpened] = useState(props.opened);
   const depth = props.depth ?? 0;
   const [menuVisible, setMenuVisible] = useState(false);

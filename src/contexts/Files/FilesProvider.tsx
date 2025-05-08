@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { invoke } from "@tauri-apps/api/core";
-import { mkdir } from '@tauri-apps/plugin-fs';
+import { create, mkdir } from '@tauri-apps/plugin-fs';
 
 import FileType from "../../model/FileType";
 import DirectoryType from "../../model/DirectoryType";
@@ -21,13 +21,12 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     const [openedFiles, setOpenedFiles] = useState<FileType[]>([]);
 
     const createFile = async (file: FileType) => {
-        await invoke<void>('create_file', { path: file.path, content: "" });
+        await create(file.path);
         await loadFiles(path);
         openFile(file);
     };
 
     const createDirectory = async (directory: DirectoryType) => {
-        console.log(directory)
         await mkdir(directory.path)
         loadFiles(path)
     }
