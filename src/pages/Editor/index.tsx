@@ -79,7 +79,7 @@ function Editor() {
   }, [uri]);
 
   useEffect(() => {
-    if (openedFiles.length === 0) {
+    if (openedFiles.length == 0) {
       navigate('/');
     } else {
       openFile(openedFiles[openedFiles.length - 1]);

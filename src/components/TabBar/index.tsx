@@ -38,8 +38,8 @@ const TabBar = () => {
                 <div className="icons">
                     <div className="close" onClick={() => closeFile(file)}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 4 4" width="100%" height="100%">
-                            <path d="M-2 -2 L2 2" fill="white" stroke="white"/>
-                            <path d="M-2 2 L2 -2" fill="white" stroke="white"/>
+                            <path d="M-2 -2 L2 2" fill="white" stroke="white" strokeWidth=".9"/>
+                            <path d="M-2 2 L2 -2" fill="white" stroke="white" strokeWidth=".9"/>
                         </svg>
                     </div>
                     {
