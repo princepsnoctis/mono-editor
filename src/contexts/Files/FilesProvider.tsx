@@ -41,6 +41,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
                     name: file.name,
                     is_dir: file.is_dir,
                     type: 'directory' as const,
+                    path: fullPath,
                     children: children ?? [],
                 }
             }
@@ -67,6 +68,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
                     return {
                         name: file.name,
                         children: file.children,
+                        path: file.path,
                         type: 'directory',
                         opened: false,
                     }
@@ -82,6 +84,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
                 }
             }) as (FileType | DirectoryType)[])
         })
+        console.log(files)
     }
 
     const openFile = (file: FileType) => {

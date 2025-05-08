@@ -35,7 +35,7 @@ const Explorer = () => {
 
   const children = files.map((file: any, index: number) => {
     if(file.type == 'directory') {
-      return <Directory key={file.name+index} name={file.name} type="directory" opened={true}>
+      return <Directory key={file.name+index} path={file.path} name={file.name} type="directory" opened={true}>
         {file.children}
       </Directory>;
     }
