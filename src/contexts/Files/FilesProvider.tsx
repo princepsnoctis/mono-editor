@@ -8,6 +8,8 @@ import FileType from "../../model/FileType";
 import DirectoryType from "../../model/DirectoryType";
 import FilesContext from "./FilesContext";
 
+import { open } from '@tauri-apps/plugin-dialog';
+
 type FileInfo = {
     name: string;
     is_dir: boolean;
@@ -20,6 +22,26 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     const [path, setPath] = useState<string>("");
     const [files, setFiles] = useState<(FileType | DirectoryType)[]>([]);
     const [openedFiles, setOpenedFiles] = useState<FileType[]>([]);
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            // Closing and Opening Explorer shortcut
+            if(event.ctrlKey && event.key.toLowerCase() == 'o') {
+                openFolder()
+            }
+          };
+
+          const openFolder = async () => {
+            const directory = await open({
+              multiple: false,
+              directory: true,
+            });
+            setPath(directory?.replace(/\\/g, '/') ?? '');
+          }
+        
+          window.addEventListener('keydown', handleKeyDown);
+          return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [])
 
     useEffect(() => {
         let unwatch: (() => void) | undefined;
@@ -92,6 +114,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const loadFiles = async (): Promise<void> => {
+        console.log("loadingFiles")
         const result = await loadData(path);
         setFiles(result.map(file => {
             if(file.is_dir) {
@@ -125,11 +148,6 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     const closeFile = (file: FileType) => {
         setOpenedFiles(prevFiles => prevFiles.filter(f => f.path != file.path));
     };
-
-    useEffect(() => {
-        loadFiles();
-    }, [path])
-
 
     const contextValue = useMemo(() => ({
         path,

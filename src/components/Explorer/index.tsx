@@ -12,13 +12,14 @@ import FileType from '../../model/FileType';
 import DirectoryType from '../../model/DirectoryType';
 
 const Explorer = () => {
-  const { files, path, setPath, createFile, createDirectory } = useFiles();
+  const { files, path, setPath, createFile, createDirectory, loadFiles } = useFiles();
   const [opened, setOpened] = useState(true);
   const [addingFileOrDir, setAddingFileOrDir] = useState<[boolean, string]>([false, ""]);
   const inputValueRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Closing and Opening Explorer shortcut
       if (event.ctrlKey && event.key.toLowerCase() == 'b') {
         event.preventDefault();
         setOpened(prev => !prev);
@@ -35,6 +36,7 @@ const Explorer = () => {
       directory: true,
     });
     setPath(directory?.replace(/\\/g, '/') ?? '');
+    loadFiles();
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
