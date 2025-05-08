@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useFiles } from '../../contexts/Files';
 
 import { open } from '@tauri-apps/plugin-dialog';
+import ProjectHeader from "../ProjectHeader";
 
 const Explorer = () => {
   const [opened, setOpened] = useState(true);
@@ -44,6 +45,8 @@ const Explorer = () => {
 
   return (opened &&
     <div className="explorer">
+      <ProjectHeader/>
+
       {children}
       { path == '' && 
         <button className="open-folder" onClick={openFolder}>

@@ -2,9 +2,10 @@
   width: 300px;
   height: 100%;
 
+  flex-shrink: 0;
+
   background-color: #1e1e1e;
   color: #fff;
-  border-right: 1px solid #333;
 
   // TODO: Clean up what's below
   display: flex;
