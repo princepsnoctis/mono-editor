@@ -8,7 +8,7 @@ interface FileContextType {
     setFiles: React.Dispatch<React.SetStateAction<(FileType | DirectoryType)[]>>;
     openedFiles: FileType[];
     setOpenedFiles: React.Dispatch<React.SetStateAction<FileType[]>>;
-    loadFiles: (path: string) => void;
+    loadFiles: () => void;
     createFile: (file: FileType) => void;
     createDirectory: (directory: DirectoryType) => void;
     openFile: (file: FileType) => void;

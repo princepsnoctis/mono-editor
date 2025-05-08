@@ -38,9 +38,8 @@ const Explorer = () => {
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if(!inputValueRef.current?.value) {
+    if(!inputValueRef.current?.value)
       return;
-    }
     if(event.key == "Enter") {
       if(addingFileOrDir[1] == "file") {
         const split = inputValueRef.current.value.split('.')

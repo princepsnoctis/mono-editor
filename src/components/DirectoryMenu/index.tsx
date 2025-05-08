@@ -4,7 +4,6 @@ import DirectoryType from '../../model/DirectoryType';
 import { forwardRef } from 'react';
 
 import { remove } from '@tauri-apps/plugin-fs';
-import { useFiles } from '../../contexts/Files';
 
 interface FileMenuProps {
     directory: DirectoryType;
@@ -14,24 +13,14 @@ interface FileMenuProps {
 }
 
 const DirectoryMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
-    const { loadFiles, path } = useFiles();
-
-    const renameFile = () => {
+    const renameDirectory = () => {
         console.log(props.directory);
         props.edit();
         props.closeMenu();
     };
 
-    const deleteFile = () => {
+    const deleteDirectory = () => {
         remove(props.directory.path)
-            .then(() => {
-                /* 
-                
-                    ZOPTYMALIZUJ
-
-                */
-                loadFiles(path);
-            })
             .catch((error) => {
                 console.error('Error removing the file:', error); // Handle error if file removal fails
             });
@@ -42,8 +31,8 @@ const DirectoryMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => 
             top: props.position.y,
             left: props.position.x,
         }}>
-            <button onClick={renameFile}>Rename</button>
-            <button onClick={deleteFile}>Delete</button>
+            <button onClick={renameDirectory}>Rename</button>
+            <button onClick={deleteDirectory}>Delete</button>
         </div>
     );
 });

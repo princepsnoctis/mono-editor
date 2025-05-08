@@ -60,7 +60,7 @@ function Editor() {
   }, [content]);
 
   useEffect(() => {
-    if (uri && uri !== '/') {
+    if (uri && uri != '/') {
       invoke("read_file_content", { path: uri })
           .then((res) => {
             setContent(res as string);

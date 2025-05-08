@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { invoke } from "@tauri-apps/api/core";
-import { create, mkdir } from '@tauri-apps/plugin-fs';
+import { watchImmediate, create, mkdir } from '@tauri-apps/plugin-fs';
 
 import FileType from "../../model/FileType";
 import DirectoryType from "../../model/DirectoryType";
@@ -15,20 +15,47 @@ type FileInfo = {
 
 const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
+    const ignoreNextChange = useRef(false);
 
     const [path, setPath] = useState<string>("");
     const [files, setFiles] = useState<(FileType | DirectoryType)[]>([]);
     const [openedFiles, setOpenedFiles] = useState<FileType[]>([]);
 
+    useEffect(() => {
+        let unwatch: (() => void) | undefined;
+    
+        const watchChanges = async () => {
+          unwatch = await watchImmediate(path, () => {
+            if (ignoreNextChange.current) {
+              // Ignore if the app itself triggered the change
+              ignoreNextChange.current = false;
+              return;
+            }
+    
+            // External change, reload files
+            loadFiles();
+          });
+        };
+    
+        loadFiles();       // Initial load
+        watchChanges();    // Set up file watching
+    
+        return () => {
+          if (unwatch) unwatch(); // Cleanup watcher on unmount
+        };
+      }, [path]);
+
     const createFile = async (file: FileType) => {
+        ignoreNextChange.current = true;
         await create(file.path);
-        await loadFiles(path);
+        await loadFiles();
         openFile(file);
     };
 
     const createDirectory = async (directory: DirectoryType) => {
+        ignoreNextChange.current = true;
         await mkdir(directory.path)
-        loadFiles(path)
+        loadFiles()
     }
 
     const loadData = async (path: string): Promise<any[]> => {
@@ -64,7 +91,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         return mapped;
     }
 
-    const loadFiles = async (path: string): Promise<void> => {
+    const loadFiles = async (): Promise<void> => {
         const result = await loadData(path);
         setFiles(result.map(file => {
             if(file.is_dir) {
@@ -100,7 +127,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     useEffect(() => {
-        loadFiles(path);
+        loadFiles();
     }, [path])
 
 

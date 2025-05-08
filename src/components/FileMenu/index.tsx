@@ -14,7 +14,7 @@ interface FileMenuProps {
 }
 
 const FileMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
-    const { path, loadFiles } = useFiles();
+    const { setOpenedFiles } = useFiles();
 
     const renameFile = () => {
         props.edit();
@@ -24,12 +24,7 @@ const FileMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
     const deleteFile = () => {
         remove(props.file.path)
             .then(() => {
-                /* 
-                
-                    ZOPTYMALIZUJ
-
-                */
-                loadFiles(path)
+                setOpenedFiles(prevFiles => prevFiles.filter(f => f.path != props.file.path))
             })
             .catch((error) => {
                 console.error('Error removing the file:', error); // Handle error if file removal fails
