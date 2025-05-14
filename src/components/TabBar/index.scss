@@ -24,17 +24,21 @@
     border-bottom: 1px solid #2C2C2C;
 }
 
+.tab-bar-item .text {
+    max-width: 120px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .tab-bar-item.active {
     background-color: #161616;
     border-bottom: transparent;
+    border-right: 1px solid #2c2c2c;
 }
 
 .tab-bar-item.active:not(:first-child) {
     border-left: 1px solid #2c2c2c;
-}
-
-.tab-bar-item.active:not(:last-child) {
-    border-right: 1px solid #2c2c2c;
 }
 
 .tab-bar-item:hover {
@@ -60,6 +64,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 16px;
 }
 
 .tab-bar-item .icons .close {

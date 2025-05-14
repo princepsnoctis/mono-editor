@@ -7,7 +7,13 @@ import IconMaximize from "@assets/icons/maximize.svg?react"
 const currentWindow = getCurrentWindow();
 
 function ButtonDecorationMaximize() {
-    const maximize = async () => await currentWindow.toggleMaximize();
+    const maximize = async () => {
+        try {
+            await currentWindow.toggleMaximize();
+        } catch (error) {
+            console.log('close error:', error);
+        }
+    };
 
     return (
         <div className="button button--decoration button--decoration--maximize" onClick={maximize}>

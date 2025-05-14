@@ -34,7 +34,9 @@ const TabBar = () => {
     const filesEl = openedFiles.map((file, index) => {
         return (
             <div key={index+1} className={`tab-bar-item ${uri == file.path ? 'active' : ''}`} onClick={() => openFile(file)} onMouseDown={(e) => handleTabMouseDown(e, file)}>
-                {file.name}
+                <div className="text">
+                    {file.name}
+                </div>
                 <div className="icons">
                     <div className="close" onClick={() => closeFile(file)}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 4 4" width="100%" height="100%">
