@@ -79,15 +79,18 @@ function Editor() {
   }, [uri]);
 
   useEffect(() => {
-    if (openedFiles.length == 0) {
+    if (openedFiles.length === 0) {
       navigate('/');
-    } else {
-      openFile(openedFiles[openedFiles.length - 1]);
+    } 
+    else {
+      const currFile = openedFiles.find(file => file.path == uri);
+      if (!currFile)
+        openFile(openedFiles[openedFiles.length - 1]);
     }
   }, [openedFiles.length]);
 
   function getLogicalLineCount(text: string) {
-    return text.split('\n\n').flatMap(part => part.split('\n')).length;
+    return text.split('\n').length;
   }
 
   const lineCount = getLogicalLineCount(content);
