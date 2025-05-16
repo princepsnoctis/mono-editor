@@ -35,6 +35,12 @@ function Editor() {
   };
 
   useEffect(() => {
+    if (editorRef.current && startContent !== "") {
+      editorRef.current.innerText = startContent;
+    }
+  }, [startContent]);
+
+  useEffect(() => {
     setLineCount(getLogicalLineCount());
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key.toLowerCase() === 's') {
@@ -117,9 +123,7 @@ function Editor() {
               ref={editorRef}
               spellCheck="false"
               onInput={handleInput}
-          >
-            {startContent}
-          </div>
+          ></div>
         </div>
       </div>
   );
