@@ -11,6 +11,7 @@ function Editor() {
   const { openFile, openedFiles, setOpenedFiles } = useFiles();
   const { uri } = useParams();
   const [content, setContent] = useState("");
+  const [lineCount, setLineCount] = useState(1);
   const [startContent, setStartContent] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function Editor() {
   };
 
   useEffect(() => {
+    setLineCount(getLogicalLineCount());
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key.toLowerCase() === 's') {
         if (!uri) return;
@@ -89,11 +91,14 @@ function Editor() {
     }
   }, [openedFiles.length]);
 
-  function getLogicalLineCount(text: string) {
-    return text.split('\n').length;
+  function getLogicalLineCount() {
+    const rawText = editorRef.current?.textContent ?? '';
+  
+    // Normalize CRLF to LF
+    const normalized = rawText.replace(/\r\n?/g, '\n'); // Normalize line endings
+    const lines = normalized.split('\n'); // Don't filter!
+    return lines.length;
   }
-
-  const lineCount = getLogicalLineCount(content);
 
   return (
       uri &&
@@ -110,13 +115,8 @@ function Editor() {
               contentEditable
               suppressContentEditableWarning
               ref={editorRef}
+              spellCheck="false"
               onInput={handleInput}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  document.execCommand('insertText', false, '\n');
-                }
-              }}
           >
             {startContent}
           </div>

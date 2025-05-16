@@ -99,18 +99,20 @@ const Directory = (props: DirectoryType) => {
     <>
       <div className="directory" onClick={() => setOpened(prev => !prev)} style={{ paddingLeft: `${depth * 5}px` }} onContextMenu={handleRightClick}>
         <div className="arrow">
-          <img className="arrow-icon" src={opened ? OpenedDirectory : ClosedDirectory} alt="Opened or closed directory"></img>
+          <img className="arrow-icon" style={{ width: OpenedDirectory ? '10px' : '6px', height: OpenedDirectory ? '10px' : '6px' }} src={opened ? OpenedDirectory : ClosedDirectory} alt="Opened or closed directory"></img>
         </div>
         <img className="file-icon" src={DirectoryIcon} alt="Directory icon"></img>
-        {
-        isEditing ?
-        <input value={editedText} className="file-name-input" type="text" onChange={handleTextChange} onKeyDown={handleKeyPress} autoFocus/>
-        :
-        <span className="name">{props.name}</span>
-      }
-      { menuVisible &&
-        <DirectoryMenu directory={props} ref={menuRef} position={position} edit={() => setIsEditing(true)} closeMenu={() => setMenuVisible(false)}/>
-      }
+        <div className="name">
+          {
+            isEditing ?
+            <input value={editedText} className="file-name-input" type="text" onChange={handleTextChange} onKeyDown={handleKeyPress} autoFocus/>
+            :
+            <span>{props.name}</span>
+          }
+        </div>
+        { menuVisible &&
+          <DirectoryMenu directory={props} ref={menuRef} position={position} edit={() => setIsEditing(true)} closeMenu={() => setMenuVisible(false)}/>
+        }
       </div>
       {children}
     </>

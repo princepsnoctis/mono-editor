@@ -114,7 +114,6 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const loadFiles = async (): Promise<void> => {
-        console.log("loadingFiles")
         const result = await loadData(path);
         setFiles(result.map(file => {
             if(file.is_dir) {

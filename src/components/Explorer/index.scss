@@ -9,12 +9,28 @@
   background-color: #1e1e1e;
   color: #fff;
 
-  scrollbar-width: thin;             /* "auto" or "thin" */
-  scrollbar-color: #888 #f0f0f0;     /* thumb color, track color */
-
   /* 
     // TODO: Clean up what's below 
   */
   display: flex;
   flex-direction: column;
+}
+
+.explorer::-webkit-scrollbar {
+  width: 6px;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.explorer:hover::-webkit-scrollbar {
+  opacity: 1;
+}
+
+.explorer::-webkit-scrollbar-thumb {
+  background-color: rgba(121, 121, 121, 0.6);     /* Dark gray, semi-transparent */
+  border-radius: 3px;
+}
+
+.explorer::-webkit-scrollbar-track {
+  background: transparent;                       /* or use rgba(0,0,0,0.1) for faint track */
 }

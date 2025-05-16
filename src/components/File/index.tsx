@@ -106,16 +106,18 @@ const File = (props: FileType) => {
   const isActive = decodeURIComponent(pathname.split('/f/')[1]) == props.path;
 
   return (
-    <div className={`file ${isActive ? ' active' : ''}`} style={{ paddingLeft: `${props.depth ? props.depth * 5 : 0}px` }} onClick={handleClick} onContextMenu={handleRightClick}>
+    <div className={`file${isActive ? ' active' : ''}`} style={{ paddingLeft: `${props.depth ? props.depth * 5 : 0}px` }} onClick={handleClick} onContextMenu={handleRightClick}>
       <div className="icon">
-        <img className="icon" src={icon} alt="File icon"></img>
+        <img src={icon} alt="File icon"></img>
       </div>
-      {
-        isEditing ?
-        <input value={editedText} className="file-name-input" type="text" onChange={handleTextChange} onKeyDown={handleKeyPress} autoFocus/>
-        :
-        <span className="name">{props.name}</span>
-      }
+      <div className="name">
+        {
+          isEditing ?
+          <input value={editedText} className="file-name-input" type="text" onChange={handleTextChange} onKeyDown={handleKeyPress} autoFocus/>
+          :
+          <span className="name">{props.name}</span>
+        }
+      </div>
       { menuVisible &&
         <FileMenu file={props} ref={menuRef} position={position} edit={() => setIsEditing(true)} closeMenu={() => setMenuVisible(false)}/>
       }
