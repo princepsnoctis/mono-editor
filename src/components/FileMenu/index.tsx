@@ -14,7 +14,7 @@ interface FileMenuProps {
 }
 
 const FileMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
-    const { path, setOpenedFiles, closeFile } = useFiles();
+    const { path, closeFile, deleteByPath } = useFiles();
 
     const renameFile = () => {
         props.edit();
@@ -25,7 +25,7 @@ const FileMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
         closeFile(props.file)
         remove(props.file.path)
             .then(() => {
-                setOpenedFiles(prevFiles => prevFiles.filter(f => f.path != props.file.path))
+                deleteByPath(props.file.path)
             })
             .catch((error) => {
                 console.error('Error removing the file:', error); // Handle error if file removal fails

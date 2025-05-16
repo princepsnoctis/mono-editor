@@ -13,6 +13,7 @@ interface FileContextType {
     createDirectory: (directory: DirectoryType) => void;
     openFile: (file: FileType) => void;
     closeFile: (file: FileType) => void;
+    deleteByPath: (path: string) => void;
 }
 
 export default FileContextType;

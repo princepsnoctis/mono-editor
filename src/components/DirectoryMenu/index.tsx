@@ -15,7 +15,7 @@ interface FileMenuProps {
 }
 
 const DirectoryMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
-    const { path, openedFiles, closeFile } = useFiles();
+    const { path, openedFiles, closeFile, deleteByPath } = useFiles();
 
     const newFile = () => {
         props.setIsCreating([true, "file"])
@@ -46,14 +46,12 @@ const DirectoryMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => 
     const deleteDirectory = () => {
         remove(props.directory.path)
             .then(() => {
-                props.directory.children.forEach(child => {
-                    if(child.type == 'file' && openedFiles.includes(child)) {
-                        closeFile(child);
-                    }
-                })
+                deleteByPath(props.directory.path)
+                props.closeMenu();
             })
             .catch((error) => {
-                console.error('Error removing the file:', error); // Handle error if file removal fails
+                alert(`Error removing the file: ${error}`); // Handle error if file removal fails
+                props.closeMenu();
             });
     };
 

@@ -148,6 +148,11 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         setOpenedFiles(prevFiles => prevFiles.filter(f => f.path != file.path));
     };
 
+    function deleteByPath(path: string) {
+        setOpenedFiles(prev =>prev.filter(file => !file.path.startsWith(path + "/") && file.path !== path));
+        loadFiles();
+    }
+
     const contextValue = useMemo(() => ({
         path,
         setPath,
@@ -159,8 +164,9 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         createFile,
         createDirectory,
         openFile,
-        closeFile
-    }), [path, setPath, files, setFiles, openedFiles, setOpenedFiles, loadFiles, createFile, createDirectory, openFile, closeFile]);
+        closeFile,
+        deleteByPath
+    }), [path, setPath, files, setFiles, openedFiles, setOpenedFiles, loadFiles, createFile, createDirectory, openFile, closeFile, deleteByPath]);
     
     return (
         <FilesContext.Provider value={contextValue}>
