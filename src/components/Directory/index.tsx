@@ -11,15 +11,19 @@ import { useFiles } from '../../contexts/Files';
 
 import { rename } from '@tauri-apps/plugin-fs';
 import DirectoryMenu from '../DirectoryMenu';
+import FileType from '../../model/FileType';
 
 const Directory = (props: DirectoryType) => {
-  const [opened, setOpened] = useState(props.opened);
-  const depth = props.depth ?? 0;
-  const [menuVisible, setMenuVisible] = useState(false);
+  const { createFile, createDirectory } = useFiles();
+    const [opened, setOpened] = useState(props.opened);
+    const depth = props.depth ?? 0;
+    const [menuVisible, setMenuVisible] = useState(false);
     const [editedText, setEditedText] = useState(props.name);
     const [isEditing, setIsEditing] = useState(false);
+    const [isCreating, setIsCreating] = useState<[boolean, string]>([false, ""]);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const menuRef = useRef<HTMLDivElement>(null);
+    const createInputRef = useRef<HTMLInputElement>(null);
 
     const { setFiles, setOpenedFiles } = useFiles();
   
@@ -52,7 +56,7 @@ const Directory = (props: DirectoryType) => {
       setEditedText(event.target.value);
     };
   
-    const handleKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    const handleEditKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
       if (event.key == "Enter") {
         console.log(props.path)
         const newPath = `${props.path.split('/').slice(0, -1).join('/')}/${editedText}`
@@ -88,6 +92,35 @@ const Directory = (props: DirectoryType) => {
       }
     };
 
+    const handleCreateKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+      if(!createInputRef.current?.value)
+        return;
+      if(event.key == "Enter") {
+        if(isCreating[1] == "file") {
+          const split = createInputRef.current.value.split('.')
+          const file: FileType = {
+            name: createInputRef.current.value,
+            type: 'file',
+            extension: split[split.length-1],
+            path: props.path + '/' + createInputRef.current.value,
+            isEdited: false,
+          }
+          createFile(file)
+        }
+        else if(isCreating[1] == "directory") {
+          const directory: DirectoryType = {
+            name: createInputRef.current.value,
+            type: 'directory',
+            path: props.path + '/' + createInputRef.current.value,
+            children: [],
+            opened: false
+          }
+          createDirectory(directory)
+        }
+        setIsCreating([false, ""]);
+      }
+    }
+
   const children = opened ? props.children?.map((child, index) => {
     if (child.type == 'directory')
       return <Directory key={index} {...(child)} depth={depth+1} />;
@@ -97,7 +130,7 @@ const Directory = (props: DirectoryType) => {
 
   return (
     <>
-      <div className="directory" onClick={() => setOpened(prev => !prev)} style={{ paddingLeft: `${depth * 5}px` }} onContextMenu={handleRightClick}>
+      <div className="directory" onClick={() => {if(!isEditing && !menuVisible) setOpened(prev => !prev)}} style={{ paddingLeft: `${depth * 5}px` }} onContextMenu={handleRightClick}>
         <div className="arrow">
           <img className="arrow-icon" style={{ width: OpenedDirectory ? '10px' : '6px', height: OpenedDirectory ? '10px' : '6px' }} src={opened ? OpenedDirectory : ClosedDirectory} alt="Opened or closed directory"></img>
         </div>
@@ -105,15 +138,18 @@ const Directory = (props: DirectoryType) => {
         <div className="name">
           {
             isEditing ?
-            <input value={editedText} className="file-name-input" type="text" onChange={handleTextChange} onKeyDown={handleKeyPress} autoFocus/>
+            <input value={editedText} className="file-name-input" type="text" onChange={handleTextChange} onKeyDown={handleEditKeyPress} spellCheck="false" autoFocus onBlur={() => setIsEditing(false)}/>
             :
             <span>{props.name}</span>
           }
         </div>
         { menuVisible &&
-          <DirectoryMenu directory={props} ref={menuRef} position={position} edit={() => setIsEditing(true)} closeMenu={() => setMenuVisible(false)}/>
+          <DirectoryMenu directory={props} ref={menuRef} position={position} edit={() => setIsEditing(true)} closeMenu={() => setMenuVisible(false)} setIsCreating={setIsCreating}/>
         }
       </div>
+      {isCreating[0] &&
+        <input className="create-input" type="text" placeholder={isCreating[1] == "file" ? "File name" : "Directory name"} onKeyDown={handleCreateKeyPress} ref={createInputRef} spellCheck="false" autoFocus onBlur={() => setIsCreating([false, ""])}/>
+      }
       {children}
     </>
   )

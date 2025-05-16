@@ -82,7 +82,7 @@ const Explorer = () => {
     <div className="explorer">
       <ProjectHeader title={path.split('/').pop() ?? "Project"} setAdding={setAddingFileOrDir}/>
       { addingFileOrDir[0] && 
-        <input type="text" placeholder={addingFileOrDir[1] == "file" ? "File name" : "Directory name"} autoFocus onBlur={() => setAddingFileOrDir([false, ""])} onKeyDown={handleKeyDown} ref={inputValueRef}/>
+        <input type="text" className="explorer-add-input" placeholder={addingFileOrDir[1] == "file" ? "File name" : "Directory name"} spellCheck="false" autoFocus onBlur={() => setAddingFileOrDir([false, ""])} onKeyDown={handleKeyDown} ref={inputValueRef}/>
       }
       {children}
       { path == '' && 

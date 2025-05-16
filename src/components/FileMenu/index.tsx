@@ -14,7 +14,7 @@ interface FileMenuProps {
 }
 
 const FileMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
-    const { setOpenedFiles } = useFiles();
+    const { path, setOpenedFiles, closeFile } = useFiles();
 
     const renameFile = () => {
         props.edit();
@@ -22,6 +22,7 @@ const FileMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
     };
 
     const deleteFile = () => {
+        closeFile(props.file)
         remove(props.file.path)
             .then(() => {
                 setOpenedFiles(prevFiles => prevFiles.filter(f => f.path != props.file.path))
@@ -31,11 +32,24 @@ const FileMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
             });
     };
 
+    const copyPath = () => {
+        navigator.clipboard.writeText(props.file.path)
+        props.closeMenu();
+    }
+    
+    const copyRelativePath = () => {
+        navigator.clipboard.writeText(props.file.path.split(path + '/')[1])
+        props.closeMenu();
+    }
+
     return (
         <div className='settings' ref={ref} style={{
             top: props.position.y,
             left: props.position.x,
         }}>
+            <button onClick={copyPath}>Copy Path</button>
+            <button onClick={copyRelativePath}>Copy Relative Path</button>
+            <hr/>
             <button onClick={renameFile}>Rename</button>
             <button onClick={deleteFile}>Delete</button>
         </div>

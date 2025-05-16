@@ -113,7 +113,7 @@ const File = (props: FileType) => {
       <div className="name">
         {
           isEditing ?
-          <input value={editedText} className="file-name-input" type="text" onChange={handleTextChange} onKeyDown={handleKeyPress} autoFocus/>
+          <input value={editedText} className="file-name-input" type="text" spellCheck="false" onChange={handleTextChange} onKeyDown={handleKeyPress} autoFocus onBlur={() => setIsEditing(false)}/>
           :
           <span className="name">{props.name}</span>
         }

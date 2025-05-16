@@ -1,18 +1,42 @@
 import './index.css'
 
 import DirectoryType from '../../model/DirectoryType';
-import { forwardRef } from 'react';
+import { Dispatch, forwardRef, SetStateAction } from 'react';
 
 import { remove } from '@tauri-apps/plugin-fs';
+import { useFiles } from '../../contexts/Files';
 
 interface FileMenuProps {
     directory: DirectoryType;
     position: { x: number, y: number };
     edit: () => void;
     closeMenu: () => void;
+    setIsCreating: Dispatch<SetStateAction<[boolean, string]>>;
 }
 
 const DirectoryMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => {
+    const { path, openedFiles, closeFile } = useFiles();
+
+    const newFile = () => {
+        props.setIsCreating([true, "file"])
+        props.closeMenu();
+    }
+
+    const newFolder = () => {
+        props.setIsCreating([true, "directory"])
+        props.closeMenu();
+    }
+
+    const copyPath = () => {
+        navigator.clipboard.writeText(props.directory.path)
+        props.closeMenu();
+    }
+    
+    const copyRelativePath = () => {
+        navigator.clipboard.writeText(props.directory.path.split(path + '/')[1])
+        props.closeMenu();
+    }
+
     const renameDirectory = () => {
         console.log(props.directory);
         props.edit();
@@ -21,6 +45,13 @@ const DirectoryMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => 
 
     const deleteDirectory = () => {
         remove(props.directory.path)
+            .then(() => {
+                props.directory.children.forEach(child => {
+                    if(child.type == 'file' && openedFiles.includes(child)) {
+                        closeFile(child);
+                    }
+                })
+            })
             .catch((error) => {
                 console.error('Error removing the file:', error); // Handle error if file removal fails
             });
@@ -31,6 +62,12 @@ const DirectoryMenu = forwardRef<HTMLDivElement, FileMenuProps>((props, ref) => 
             top: props.position.y,
             left: props.position.x,
         }}>
+            <button onClick={newFile}>New File</button>
+            <button onClick={newFolder}>New Folder</button>
+            <hr/>
+            <button onClick={copyPath}>Copy Path</button>
+            <button onClick={copyRelativePath}>Copy Relative Path</button>
+            <hr/>
             <button onClick={renameDirectory}>Rename</button>
             <button onClick={deleteDirectory}>Delete</button>
         </div>

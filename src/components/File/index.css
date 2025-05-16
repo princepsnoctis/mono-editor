@@ -17,7 +17,22 @@
   max-width: 90%;
 }
 
-.file:hover, .file.active {
+.file-name-input {
+  background: transparent;
+  padding: 0;
+  border: none;
+  outline: none;
+  height: 21px;
+  width: 100%;
+  font: inherit;
+  color: #fff;
+}
+
+.file-name-input:focus {
+  box-shadow: none;
+}
+
+.file:not(:has(.settings:hover)):hover, .file.active {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
