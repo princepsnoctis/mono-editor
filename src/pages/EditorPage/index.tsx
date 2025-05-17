@@ -8,6 +8,7 @@ import TabBar from "../../components/TabBar";
 import { useFiles } from "../../contexts/Files";
 
 import Editor, { useMonaco } from '@monaco-editor/react'
+import tomorrowNight from "./themes/Tomorrow-Night.json";
 
 const EditorPage = () => {
   const monaco = useMonaco();
@@ -71,15 +72,16 @@ const EditorPage = () => {
   }, [content]);
 
   useEffect(() => {
+    const customTomorrowNight = {
+      ...tomorrowNight,
+      colors: {
+        ...tomorrowNight.colors,
+        'editor.background': '#161616',  // Twój nowy kolor tła
+      }
+    }
     if (monaco) {
-      monaco.editor.defineTheme('my-dark-theme', {
-        base: 'vs-dark',
-        inherit: true,
-        rules: [],
-        colors: {
-          'editor.background': '#161616',
-        },
-      });
+      monaco.editor.defineTheme('TomorrowNight', customTomorrowNight as any);
+      monaco.editor.setTheme('TomorrowNight');
     }
   }, [monaco]);
 
@@ -106,7 +108,7 @@ const EditorPage = () => {
     <div className="editor">
       <TabBar />
       <Editor 
-        theme="my-dark-theme"
+        theme="TomorrowNight"
         value={content}
         language={getLanguageFromPath(uri)}
         path={uri}

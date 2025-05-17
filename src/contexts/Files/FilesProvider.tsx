@@ -162,11 +162,9 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(() => {
-        if(path == "") {
-            setFiles([]);
-            setOpenedFiles([]);
-            navigate('');
-        }
+        setFiles([]);
+        setOpenedFiles([]);
+        navigate('');
     }, [path])
 
     const contextValue = useMemo(() => ({
