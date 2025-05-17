@@ -81,7 +81,7 @@ const File = (props: FileType) => {
       const updateFileName = (file: any, path: string, newName: string) => {
         // If the current file has the path, update its name
         if ('path' in file && file.path === path) {
-          return { ...file, name: newName, path: `${path.split('/').slice(0, -1).join('/')}/${editedText}` };
+          return { ...file, name: newName, path: `${path.split('/').slice(0, -1).join('/')}/${editedText}`, content: file.content};
         }
       
         // If the file has children, recursively update the children
@@ -97,7 +97,7 @@ const File = (props: FileType) => {
       
       setFiles(prev => prev.map(file => updateFileName(file, props.path, editedText)));
       setOpenedFiles(prev => prev.map(file =>
-        'path' in file && file.path == props.path ? { ...file, name: editedText, path: `${props.path.split(/[\\/]/).slice(0, -1).join('/')}/${editedText}` } : file
+        file.path == props.path ? { ...file, name: editedText, path: `${props.path}/${editedText}` } : file
       ));
       setIsEditing(false); // Stop editing
     }

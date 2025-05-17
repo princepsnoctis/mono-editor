@@ -141,7 +141,7 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         navigate(`/f/${encodeURIComponent(file.path)}`);
         if(openedFiles.find((f) => f.path == file.path))
             return;
-        setOpenedFiles((prevFiles) => [...prevFiles, file]);
+        setOpenedFiles((prevFiles) => [...prevFiles, {...file, content: ""}]);
     };
 
     const closeFile = (file: FileType) => {

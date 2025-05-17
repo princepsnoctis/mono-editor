@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import TabBar from "../../components/TabBar";
 import { useFiles } from "../../contexts/Files";
 
-function Editor() {
+const EditorPage = () => {
   const { openFile, openedFiles, setOpenedFiles } = useFiles();
   const { uri } = useParams();
   const [content, setContent] = useState("");
@@ -38,6 +38,7 @@ function Editor() {
     if (editorRef.current && startContent !== "") {
       editorRef.current.innerText = startContent;
     }
+    console.log(startContent.split('\n'))
   }, [startContent]);
 
   useEffect(() => {
@@ -98,11 +99,7 @@ function Editor() {
   }, [openedFiles.length]);
 
   function getLogicalLineCount() {
-    const rawText = editorRef.current?.textContent ?? '';
-  
-    // Normalize CRLF to LF
-    const normalized = rawText.replace(/\r\n?/g, '\n'); // Normalize line endings
-    const lines = normalized.split('\n'); // Don't filter!
+    const lines = content.split('\n'); // Don't filter!
     return lines.length;
   }
 
@@ -129,4 +126,4 @@ function Editor() {
   );
 }
 
-export default Editor;
+export default EditorPage;
