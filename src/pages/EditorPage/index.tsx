@@ -42,9 +42,11 @@ const EditorPage = () => {
       setContent("");
       setStartContent("");
     }
+  }, [uri]);
 
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.key.toLowerCase() === 's') {
+      if (event.ctrlKey && event.key.toLowerCase() == 's') {
         event.preventDefault();
         invoke("save_to_file", { path: uri, content })
           .then(() => {
@@ -66,7 +68,7 @@ const EditorPage = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [uri]);
+  }, [content]);
 
   useEffect(() => {
     if (monaco) {
@@ -83,6 +85,7 @@ const EditorPage = () => {
 
   function handleCodeChange(newValue: string | undefined) {
     const isEdited = newValue != startContent;
+    setContent(newValue ?? "");
     setOpenedFiles(prev =>
       prev.map(f => f.path == uri ? { ...f, content: newValue, isEdited } : f)
     );
