@@ -2,19 +2,18 @@ import { invoke } from "@tauri-apps/api/core";
 import "./index.scss";
 
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import TabBar from "../../components/TabBar";
 import { useFiles } from "../../contexts/Files";
 
 const EditorPage = () => {
-  const { openFile, openedFiles, setOpenedFiles } = useFiles();
+  const { openedFiles, setOpenedFiles } = useFiles();
   const { uri } = useParams();
   const [content, setContent] = useState("");
   const [lineCount, setLineCount] = useState(1);
   const [startContent, setStartContent] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   const handleInput = () => {
     const newContent = editorRef.current?.innerText ?? "";
@@ -86,17 +85,6 @@ const EditorPage = () => {
       setStartContent("");
     }
   }, [uri]);
-
-  useEffect(() => {
-    if (openedFiles.length === 0) {
-      navigate('/');
-    } 
-    else {
-      const currFile = openedFiles.find(file => file.path == uri);
-      if (!currFile)
-        openFile(openedFiles[openedFiles.length - 1]);
-    }
-  }, [openedFiles.length]);
 
   function getLogicalLineCount() {
     const lines = content.split('\n'); // Don't filter!
