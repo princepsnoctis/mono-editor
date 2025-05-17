@@ -1,23 +1,21 @@
 import { invoke } from "@tauri-apps/api/core";
 import "./index.scss";
 
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import TabBar from "../../components/TabBar";
 import { useFiles } from "../../contexts/Files";
 
-import Editor from '@monaco-editor/react'
+import Editor, { useMonaco } from '@monaco-editor/react'
 
 const EditorPage = () => {
+  const monaco = useMonaco();
   const { uri } = useParams();
   const [content, setContent] = useState("");
-
   const { openedFiles, setOpenedFiles } = useFiles();
 
   useEffect(() => {
-    console.log(uri)
-    console.log(openedFiles)
     const file = openedFiles.find(file => file.path == uri);
     if (file?.content) {
       setContent(file.content ?? "");
@@ -43,6 +41,19 @@ const EditorPage = () => {
     
   }, [uri]);
 
+  useEffect(() => {
+    if (monaco) {
+      monaco.editor.defineTheme('my-dark-theme', {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [],
+        colors: {
+          'editor.background': '#161616',
+        },
+      });
+    }
+  }, [monaco]);
+
   function handleCodeChange(path: string, newValue: string | undefined) {
     setOpenedFiles(prev =>
       prev.map(f => f.path == path ? { ...f, content: newValue ?? '' } : f)
@@ -58,18 +69,15 @@ const EditorPage = () => {
     return 'plaintext';
   }
 
-  const language = getLanguageFromPath(uri ?? '');
-
-  console.log(content)
 
   return (
     uri &&
     <div className="editor">
       <TabBar />
       <Editor 
-        theme="vs-dark"
+        theme="my-dark-theme"
         value={content}
-        language={language}
+        language={getLanguageFromPath(uri ?? '')}
         path={uri}
         onChange={(value) => handleCodeChange(uri, value)}
       />

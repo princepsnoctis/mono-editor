@@ -36,7 +36,8 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
               multiple: false,
               directory: true,
             });
-            setPath(directory?.replace(/\\/g, '/') ?? '');
+            if(directory)
+                setPath(directory.replace(/\\/g, '/'));
           }
         
           window.addEventListener('keydown', handleKeyDown);
@@ -145,6 +146,13 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const closeFile = (file: FileType) => {
+        const fileIndex = openedFiles.indexOf(file);
+        if(openedFiles.length == 1)
+            navigate('');
+        else if(fileIndex == openedFiles.length - 1)
+            navigate(`/f/${encodeURIComponent(openedFiles[fileIndex - 1].path)}`);
+        else
+            navigate(`/f/${encodeURIComponent(openedFiles[fileIndex + 1].path)}`);
         setOpenedFiles(prevFiles => prevFiles.filter(f => f.path != file.path));
     };
 
@@ -152,6 +160,14 @@ const FilesProvider = ({ children }: { children: React.ReactNode }) => {
         setOpenedFiles(prev =>prev.filter(file => !file.path.startsWith(path + "/") && file.path !== path));
         loadFiles();
     }
+
+    useEffect(() => {
+        if(path == "") {
+            setFiles([]);
+            setOpenedFiles([]);
+            navigate('');
+        }
+    }, [path])
 
     const contextValue = useMemo(() => ({
         path,
