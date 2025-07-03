@@ -1,6 +1,6 @@
 # Mono Editor
 
-## Used: Tauri + React + Typescript
+Mono Editor is a text editor made with <h3>Tauri + React + Typescript</h3>
 
 <div>
   <img src="https://cdn.discordapp.com/attachments/1366810916552708156/1370038670484312154/image.png?ex=686736b1&is=6865e531&hm=3ebf03ba776c4241e6ee2f482795c3693ee9ba0e0dc97987365433e0e25d487f&" alt="Main screen"/>
